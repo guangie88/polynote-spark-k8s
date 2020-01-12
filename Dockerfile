@@ -19,7 +19,7 @@ RUN set -euo pipefail && \
         TAR_FILE=polynote-dist-2.12.tar.gz \
     else \
         TAR_FILE=polynote-dist.tar.gz \
-    fi \
+    fi; \
     mkdir -p "${POLYNOTE_HOME}"; \
     wget https://github.com/polynote/polynote/releases/download/${POLYNOTE_VERSION}/${TAR_FILE}; \
     tar xvf "${TAR_FILE}" -C "${POLYNOTE_HOME}"; \
