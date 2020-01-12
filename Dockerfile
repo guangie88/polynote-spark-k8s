@@ -12,8 +12,11 @@ ARG SCALA_VERSION
 
 RUN set -euo pipefail && \
     # Install Polynote required deps
-    conda install -y jep jedi pyspark virtualenv; \
+    conda install -y jedi pyspark virtualenv; \
     conda clean -a -y; \
+    # Install remaining required deps via pip
+    # jep has poor support for conda
+    python -m pip install --no-cache-dir jep; \
     # Set up Polynote
     if [[ "${SCALA_VERSION}" == "2.12" ]]; then \
         TAR_FILE=polynote-dist-2.12.tar.gz; \
