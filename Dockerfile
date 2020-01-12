@@ -16,9 +16,9 @@ RUN set -euo pipefail && \
     conda clean -a -y; \
     # Set up Polynote
     if [[ "${SCALA_VERSION}" == "2.12" ]]; then \
-        TAR_FILE=polynote-dist-2.12.tar.gz \
+        TAR_FILE=polynote-dist-2.12.tar.gz; \
     else \
-        TAR_FILE=polynote-dist.tar.gz \
+        TAR_FILE=polynote-dist.tar.gz; \
     fi; \
     mkdir -p "${POLYNOTE_HOME}"; \
     wget https://github.com/polynote/polynote/releases/download/${POLYNOTE_VERSION}/${TAR_FILE}; \
