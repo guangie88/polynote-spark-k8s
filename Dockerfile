@@ -16,10 +16,11 @@ USER root
 RUN set -euo pipefail && \
     # Install Polynote required deps (pyspark is part of the base image)
     conda install -y jedi virtualenv; \
+    conda install -y -c paulscherrerinstitute jep; \
     conda clean -a -y; \
     # Install remaining required deps via pip
     # jep has poor support for conda
-    python -m pip install --no-cache-dir jep; \
+    # python -m pip install --no-cache-dir jep; \
     # Set up Polynote
     if [[ "${SCALA_VERSION}" == "2.12" ]]; then \
         TAR_FILE=polynote-dist-2.12.tar.gz; \
