@@ -11,8 +11,8 @@ ARG POLYNOTE_VERSION
 ARG SCALA_VERSION
 
 RUN set -euo pipefail && \
-    # Install Polynote required deps
-    conda install -y jedi pyspark virtualenv; \
+    # Install Polynote required deps (pyspark is part of the base image)
+    conda install -y jedi virtualenv; \
     conda clean -a -y; \
     # Install remaining required deps via pip
     # jep has poor support for conda
