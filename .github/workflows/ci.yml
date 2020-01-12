@@ -4,28 +4,53 @@ on:
   push:
     branches:
     - master
+    - v*
   pull_request:
     branches:
     - master
+    - v*
 
 jobs:
   build:
     strategy:
       matrix:
         version:
-        - polynote:  "0.2.16"
-          spark:  "2.4.4"
-          hadoop: "3.1.0"
-          scala:  "2.11"
-        - polynote:  "0.2.16"
-          spark:  "2.4.4"
-          hadoop: "3.1.0"
-          scala:  "2.12"
+        - polynote: "0.2.16"
+          python:   "3.5"
+          spark:    "2.4.4"
+          hadoop:   "3.1.0"
+          scala:    "2.11"
+        - polynote: "0.2.16"
+          python:   "3.5"
+          spark:    "2.4.4"
+          hadoop:   "3.1.0"
+          scala:    "2.12"
+        - polynote: "0.2.16"
+          python:   "3.6"
+          spark:    "2.4.4"
+          hadoop:   "3.1.0"
+          scala:    "2.11"
+        - polynote: "0.2.16"
+          python:   "3.6"
+          spark:    "2.4.4"
+          hadoop:   "3.1.0"
+          scala:    "2.12"
+        - polynote: "0.2.16"
+          python:   "3.7"
+          spark:    "2.4.4"
+          hadoop:   "3.1.0"
+          scala:    "2.11"
+        - polynote: "0.2.16"
+          python:   "3.7"
+          spark:    "2.4.4"
+          hadoop:   "3.1.0"
+          scala:    "2.12"
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: polynote-spark-k8s
       SELF_VERSION: "v1"
       POLYNOTE_VERSION: "${{ matrix.version.polynote }}"
+      PYTHON_VERSION: "${{ matrix.version.python }}"
       SPARK_VERSION: "${{ matrix.version.spark }}"
       HADOOP_VERSION: "${{ matrix.version.hadoop }}"
       SCALA_VERSION: "${{ matrix.version.scala }}"
@@ -43,9 +68,10 @@ jobs:
         if ! diff .github/workflows/ci.yml .github/workflows/ci.yml.backup; then echo "ci.yml.tmpl and ci.yml differs!" && exit 1; fi
     - name: Build Docker image
       run: |-
-        TAG_NAME="${SELF_VERSION}_${POLYNOTE_VERSION}_spark-${SPARK_VERSION}_hadoop-${HADOOP_VERSION}_scala-${SCALA_VERSION}"
+        TAG_NAME="${SELF_VERSION}_${POLYNOTE_VERSION}_python-${PYTHON_VERSION}_spark-${SPARK_VERSION}_hadoop-${HADOOP_VERSION}_scala-${SCALA_VERSION}"
         docker build . -t "${IMAGE_NAME}:${TAG_NAME}" \
           --build-arg POLYNOTE_VERSION="${POLYNOTE_VERSION}" \
+          --build-arg PYTHON_VERSION="${PYTHON_VERSION}" \
           --build-arg SPARK_VERSION="${SPARK_VERSION}" \
           --build-arg HADOOP_VERSION="${HADOOP_VERSION}" \
           --build-arg SCALA_VERSION="${SCALA_VERSION}"

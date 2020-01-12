@@ -8,6 +8,7 @@ ARG POLYNOTE_HOME="/opt/polynote"
 ENV POLYNOTE_HOME="${POLYNOTE_HOME}"
 
 ARG POLYNOTE_VERSION
+ARG PYTHON_VERSION
 ARG SCALA_VERSION
 
 # Drop back to root to install
@@ -15,7 +16,7 @@ USER root
 
 RUN set -euo pipefail && \
     # Install Polynote required deps (pyspark is part of the base image)
-    conda install -y jedi virtualenv; \
+    conda install -y "python=${PYTHON_VERSION}" jedi virtualenv; \
     conda install -y -c paulscherrerinstitute jep; \
     conda clean -a -y; \
     # Install remaining required deps via pip
