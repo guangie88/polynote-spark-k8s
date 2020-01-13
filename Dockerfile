@@ -34,12 +34,19 @@ RUN set -euo pipefail && \
     fi; \
     mkdir -p "${POLYNOTE_HOME}"; \
     wget https://github.com/polynote/polynote/releases/download/${POLYNOTE_VERSION}/${TAR_FILE}; \
-    tar xvf "${TAR_FILE}" -C "${POLYNOTE_HOME}"; \
-    mv "${POLYNOTE_HOME}/polynote/*" "${POLYNOTE_HOME}/" && rmdir "${POLYNOTE_HOME}/polynote"; \
+    tar xvf "${TAR_FILE}" -C "${POLYNOTE_HOME}" --strip=1; \
     apk del \
         gcc \
         musl-dev \
         ; \
+    # For env var injection
+    conda install -y pyyaml; \
+    conda clean -a -y; \
     :
 
-ENTRYPOINT ["/opt/polynote/polynote.py"]
+WORKDIR /app
+COPY inject.py entrypoint.sh ./
+
+ENV POLYNOTE___listen___host="0.0.0.0"
+ENV LD_LIBRARY_PATH=/usr/lib/jvm/java-1.8-openjdk/jre/lib/amd64/server/
+ENTRYPOINT ["./entrypoint.sh"]
